@@ -14,7 +14,7 @@
 | IDE's      | VS Code, [Neovim](https://astronvim.com)  |
 | File Manager | [Superfile](https://superfile.dev/overview/) |
 
-## Requirements
+## 🗒️ Requirements
 - [Waybar](https://github.com/Alexays/Waybar?tab=readme-ov-file)
 - [Wofi](https://github.com/SimplyCEO/wofi)
 - [Hyprpaper](https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper/)
