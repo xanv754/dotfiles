@@ -12,7 +12,7 @@
 | Terminal   | [Kitty](https://sw.kovidgoyal.net/kitty/) |
 | Browser    | [Vivaldi](https://vivaldi.com/es/)        |
 | IDE's      | VS Code, [Neovim](https://astronvim.com)  |
-| File Manager | [Superfile](https://superfile.dev/overview/) |
+| File Manager | [Thunar](https://docs.xfce.org/xfce/thunar/start), [Superfile](https://superfile.dev/overview/) |
 
 ## 🗒️ Requirements
 - [Waybar](https://github.com/Alexays/Waybar?tab=readme-ov-file)
