@@ -22,3 +22,7 @@
 - [network-manager-applet](https://man.archlinux.org/man/nm-applet.1.en)
 - [PulvaControl](https://freedesktop.org/software/pulseaudio/pavucontrol/)
 - [Gpicview](https://lxde.sourceforge.net/gpicview/)
+ ### Others...
+ ```bash
+sudo pacman -S grim slurp wl-clipboard
+```
