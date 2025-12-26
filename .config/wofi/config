@@ -1,0 +1,10 @@
+show=drun
+prompt=Buscar aplicaciones
+width=40%
+height=35%
+location=center
+allow_images=true
+image_size=32
+insensitive=true
+gtk_dark=true
+
