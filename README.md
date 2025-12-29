@@ -11,7 +11,7 @@
 | Shell      | zsh                                       | 
 | Terminal   | [Kitty](https://sw.kovidgoyal.net/kitty/) |
 | Browser    | [Vivaldi](https://vivaldi.com/es/)        |
-| IDE's      | VS Code, [Neovim](https://astronvim.com)  |
+| IDE's      | VS Code, [Neovim](https://astronvim.com), [Fresh](https://sinelaw.github.io/fresh/) |
 | File Manager | [Thunar](https://docs.xfce.org/xfce/thunar/start), [Superfile](https://superfile.dev/overview/) |
 
 ## 🗒️ Requirements
@@ -26,3 +26,8 @@
  ```bash
 sudo pacman -S grim slurp wl-clipboard
 ```
+## 🛠️ Terminal Tools
+- [LSD](https://github.com/lsd-rs/lsd)
+- [Atuin](https://github.com/atuinsh/atuin)
+- [Zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
+- [Lazygit](https://github.com/jesseduffield/lazygit)
