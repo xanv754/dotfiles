@@ -1,6 +1,6 @@
 # My Configuration
 
-![system](./system.jpg)
+![system](./system.png)
 
 ## 💻 Machine
 **Software** 
