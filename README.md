@@ -27,5 +27,5 @@ chezmoi init --apply xanv754
 ```
 o 
 ```bash
-chezmoi init --apply https://github.com/xanv754/dotfiless
+chezmoi init --apply https://github.com/xanv754/dotfiles
 ```
