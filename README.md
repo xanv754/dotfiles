@@ -1,4 +1,4 @@
-# The Rice ✨
+# ✨ The Rice 
 
 ![Preview](./.info/desktop.png)
 
@@ -20,3 +20,12 @@ Customizing [lyne-dots](https://github.com/caioax/lyne-dots) with my own setting
 - [Glow](https://github.com/charmbracelet/glow): Render markdown on the CLI.
 - [Lazygit](https://github.com/jesseduffield/lazygit): Interface for Git within the terminal.
 - [Newsboat](https://github.com/newsboat/newsboat): RSS feed reader for the terminal.
+
+## 📥 Installation
+```bash
+chezmoi init --apply xanv754
+```
+o 
+```bash
+chezmoi init --apply https://github.com/xanv754/dotfiless
+```
