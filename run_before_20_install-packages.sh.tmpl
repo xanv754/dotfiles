@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Instalación de Hombrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  if ! grep -q "brew shellenv" "$HOME/.zshrc"; then
+    echo >> $HOME/.zshrc
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"' >> $HOME/.zshrc
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+  fi
+fi
+
+if ! command -v nvim >/dev/null 2>&1; then
+  echo "Instalación de Neovim..."
+  brew install neovim
+fi
+
+if ! command -v nvm >/dev/null 2>&1; then
+  echo "Instalación de Node.js"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+  \. "$HOME/.nvm/nvm.sh"
+  nvm install --lts
+fi
+
+if ! command -v spf >/dev/null 2>&1; then
+  echo "Instalando Superfile..."
+  bash -c "$(curl -sLo- https://superfile.dev/install.sh)"
+fi
+
+if ! command -v lsd >/dev/null 2>&1; then
+  echo "Instalando LSD..."
+  brew install lsd
+fi
+

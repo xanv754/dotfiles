@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ ! -d "$HOME/.lyne-dots" ]; then
+  echo "Clonando Lyne-dots..."
+  git clone https://github.com/caioax/lyne-dots.git $HOME/.lyne-dots
+  cd "$HOME/.lyne-dots"
+  echo "Inicio de instalación de Core Lyne-dots..."
+  ./install.sh --core
+  echo "Inicio de instalación de Terminal Lyne-dots..."
+  ./install.sh --terminal
+  echo "Inicio de instalación de Apps Lyne-dots..."
+  ./install.sh --apps
+  echo "Inicio de instalación de Utils Lyne-dots..."
+  ./install.sh --utils
+  echo "Inicio de instalación de Fonts Lyne-dots..."
+  ./install.sh --fonts
+  echo "Inicio de instalación de Quickshell Lyne-dots..."
+  ./install.sh --quickshell
+  echo "Inicio de instalación de Theming Lyne-dots..."
+  ./install.sh --theming
+fi

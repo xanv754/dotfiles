@@ -1,0 +1,28 @@
+# ------------------ Shell ------------------------------
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="cloud"
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+source $ZSH/oh-my-zsh.sh
+export EDITOR="nvim"
+
+# ------------------ Exports ------------------------------
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  
+
+# ----------------------- Alias ----------------------------------------------
+alias py="python3.14"
+alias addvenv="python3.14 -m venv .venv"
+alias venv="source ./.venv/bin/activate"
+alias cathome='cat ~/.zshrc'
+alias viewhome='bat ~/.zshrc'
+alias edithome='nvim ~/.zshrc'
+alias sshhome='cd ~/.ssh'
+alias proy='cd ~/Proyectos/ && ls'
+alias ls='lsd'
+alias logout='pkill -TERM -u "$USER"'
+alias off='systemctl poweroff'
