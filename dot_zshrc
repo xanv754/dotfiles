@@ -14,6 +14,17 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  
 
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   eval "$(ssh-agent -s)"
+   clear
+fi
+
 # ----------------------- Alias ----------------------------------------------
 alias py="python3.14"
 alias addvenv="python3.14 -m venv .venv"
