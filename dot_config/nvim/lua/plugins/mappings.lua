@@ -55,6 +55,8 @@ return {
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover línea hacia abajo" },
           -- TECLA: CTRL
+          -- Ctrl + .: Modo Insertar
+          ["<C-.>"] = { "a", desc = "Entrar en modo insertar" },
           -- Ctrl + Q: Salir
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
           -- Ctrl + S: Guardar Archivo
@@ -128,6 +130,8 @@ return {
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { "<Esc>:m .+1<cr>==gi", desc = "Mover línea hacia abajo" },
           -- TECLA: CTRL
+          -- Ctrl + .: Modo Normal
+          ["<C-.>"] = { "<cmd>stopinsert<cr>", desc = "Entra en el modo normal" },
           -- Ctrl + Q: Salir del Editor
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
           -- Ctrl + S: Guardar
@@ -155,7 +159,7 @@ return {
           -- Ctrl + |: Split Vertical
           ["<C-|>"] = { "<Esc><cmd>vsplit<cr>a", desc = "Vertical Split" },
           -- Ctrl + -: Split Horizontal
-          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Horizontal Split" },
+          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Horizontal Split" }, 
           -- COMBINACIÓN: CTRL + ALT
           -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
           ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Focus split izquierdo" },
@@ -193,7 +197,9 @@ return {
           ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover bloque hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover bloque hacia abajo" },
-          -- TECLA: CTRL
+          -- TECLA: CTRL}
+          -- Ctrl + .: Modo Normal
+          ["<C-.>"] = { "<Esc>", desc = "Entrar al modo normal" },
           -- Ctrl + Q: Salir del Editor
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
           -- Ctrl + S: Guardar Archivo
