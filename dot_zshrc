@@ -30,6 +30,8 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 # ----------------------- Alias ----------------------------------------------
+alias kssh="kitty +kitten ssh"
+alias ikat="kitty +kitten icat"
 alias py="python3.14"
 alias addvenv="python3.14 -m venv .venv"
 alias venv="source ./.venv/bin/activate"
@@ -42,3 +44,7 @@ alias ls='lsd'
 alias logout='pkill -TERM -u "$USER"'
 alias off='systemctl poweroff'
 
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
