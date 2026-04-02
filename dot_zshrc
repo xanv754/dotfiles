@@ -12,7 +12,6 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.oh-my-posh-init.zsh
-
 # ------------------ Exports ------------------------------
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -29,9 +28,15 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
    clear
 fi
 
+. "$HOME/.atuin/bin/env"
+eval "$(atuin init zsh)"
+# ----------------- Functions ----------------------------
+ksession() {
+    kitty --session "$HOME/.config/kitty/sessions/$1.kitty-session"
+}
 # ----------------------- Alias ----------------------------------------------
 alias kssh="kitty +kitten ssh"
-alias ikat="kitty +kitten icat"
+alias kicat="kitty +kitten icat"
 alias py="python3.14"
 alias addvenv="python3.14 -m venv .venv"
 alias venv="source ./.venv/bin/activate"
@@ -43,8 +48,3 @@ alias proy='cd ~/Proyectos/ && ls'
 alias ls='lsd'
 alias logout='pkill -TERM -u "$USER"'
 alias off='systemctl poweroff'
-
-
-. "$HOME/.atuin/bin/env"
-
-eval "$(atuin init zsh)"
