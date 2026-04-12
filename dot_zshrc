@@ -35,6 +35,11 @@ ksession() {
     kitty --session "$HOME/.config/kitty/sessions/$1.kitty-session"
 }
 # ----------------------- Alias ----------------------------------------------
+alias apuntesPull="cd ~/Apuntes/ && git pull origin main"
+alias apuntesPush="cd ~/Apuntes/ && git add . && git commit -m 'actualización de mis apuntes' && git push origin main"
+alias brainPush="rclone sync $HOME/.brain gDrive:/Obsidian --progress"
+alias brainPull="rclone sync gDrive:/Obsidian $HOME/.brain --progress"
+
 alias kssh="kitty +kitten ssh"
 alias kicat="kitty +kitten icat"
 alias py="python3.14"
