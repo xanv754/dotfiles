@@ -50,10 +50,13 @@ return {
             desc = "Ver referencias (LSP)",
           },
           -- TECLA: ALT
-          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
+          -- Mover buffers con Shift + Flechas
           ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover línea hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover línea hacia abajo" },
+          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
+          ["<A-Right>"] = { function() require("astrocore.buffer").move(1) end, desc = "Mover buffer a la derecha" },
+          ["<A-Left>"] = { function() require("astrocore.buffer").move(-1) end, desc = "Mover buffer a la izquierda" },
           -- TECLA: CTRL
           -- Ctrl + .: Modo Insertar
           ["<C-.>"] = { "a", desc = "Entrar en modo insertar" },
@@ -197,7 +200,9 @@ return {
           ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover bloque hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover bloque hacia abajo" },
-          -- TECLA: CTRL}
+          -- TECLA: CTRL
+          -- Ctrl + z: Deshacer
+          ["<C-z>"] = { "<Esc>ua", desc = "Undo" },
           -- Ctrl + .: Modo Normal
           ["<C-.>"] = { "<Esc>", desc = "Entrar al modo normal" },
           -- Ctrl + Q: Salir del Editor
@@ -240,4 +245,3 @@ return {
     },
   },
 }
-
