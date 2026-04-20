@@ -50,13 +50,18 @@ return {
             desc = "Ver referencias (LSP)",
           },
           -- TECLA: ALT
-          -- Mover buffers con Shift + Flechas
+          -- Guardar sin formatear
+          ["<A-s>"] = { ":noautocmd w<cr>", desc = "Guardar sin formatear" },
+          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover línea hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover línea hacia abajo" },
-          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
+          -- Mover buffers con Shift + Flechas
           ["<A-Right>"] = { function() require("astrocore.buffer").move(1) end, desc = "Mover buffer a la derecha" },
           ["<A-Left>"] = { function() require("astrocore.buffer").move(-1) end, desc = "Mover buffer a la izquierda" },
+          -- Redimensionar Explorador de Archivos
+          ["<A-.>"] = { ":vertical resize +5<cr>", desc = "Aumentar ancho de ventana" },
+          ["<A-,>"] = { ":vertical resize -5<cr>", desc = "Disminuir ancho de ventana" },
           -- TECLA: CTRL
           -- Ctrl + .: Modo Insertar
           ["<C-.>"] = { "a", desc = "Entrar en modo insertar" },
@@ -128,6 +133,11 @@ return {
           -- Shift + Fin: Sale del modo insertar y selecciona hasta el final
           ["<S-End>"] = { "<Esc>v$", desc = "Seleccionar hasta el final de línea" },
           -- TECLA: ALT
+          -- Redimensionar Explorador de Archivos
+          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Disminuir ancho" },
+          -- Guardar sin Formatear
+          ["<A-s>"] = { "<Esc>:noautocmd w<cr>a", desc = "Guardar sin formatear" },
           -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { "<Esc>:m .-2<cr>==gi", desc = "Mover línea hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
@@ -196,6 +206,11 @@ return {
           -- Shift + Tabulador: Desindentar hacia la izquierda
           ["<S-Tab>"] = { "<gv", desc = "Desindentar bloque" },
           -- TECLA: ALT
+          -- Redimensionar Explorador de Archivos
+          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Disminuir ancho" },
+          -- Guardar sin Formatear
+          ["<A-s>"] = { "<Esc>:noautocmd w<cr>gv", desc = "Guardar sin formatear" },
           -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover bloque hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
