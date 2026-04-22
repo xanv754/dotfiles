@@ -34,20 +34,37 @@ eval "$(atuin init zsh)"
 ksession() {
     kitty --session "$HOME/.config/kitty/sessions/$1.kitty-session"
 }
+
+vpn() {
+  local CONNECTION_NAME=${1:-"ProtonVPN-US"}
+
+  if nmcli connection show --active | grep "$CONNECTION_NAME"; then
+    nmcli connection down "$CONNECTION_NAME" &>/dev/null
+    [ $? -eq 0 ] && echo "VPN desconectada" || echo "Error en desconexión de la VPN"
+  else
+    nmcli connection up "$CONNECTION_NAME" &>/dev/null
+    [ $? -eq 0 ] && echo "VPN conectada" || echo "Error en conexión con la VPN"
+  fi
+}
 # ----------------------- Alias ----------------------------------------------
+alias logout='pkill -TERM -u "$USER"'
+alias off='systemctl poweroff'
+
+alias proy='cd ~/Proyectos/ && ls'
+
 alias brainPush="rclone sync $HOME/.brain gDrive:/DriveSyncFiles --progress"
 alias brainPull="rclone sync gDrive:/DriveSyncFiles $HOME/.brain --progress"
 
 alias kssh="kitty +kitten ssh"
 alias kicat="kitty +kitten icat"
+alias ls='lsd'
+
 alias py="python3.14"
 alias addvenv="python3.14 -m venv .venv"
 alias venv="source ./.venv/bin/activate"
+
 alias cathome='cat ~/.zshrc'
 alias viewhome='bat ~/.zshrc'
 alias edithome='nvim ~/.zshrc'
 alias sshhome='cd ~/.ssh'
-alias proy='cd ~/Proyectos/ && ls'
-alias ls='lsd'
-alias logout='pkill -TERM -u "$USER"'
-alias off='systemctl poweroff'
+
