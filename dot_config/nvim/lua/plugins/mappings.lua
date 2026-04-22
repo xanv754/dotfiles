@@ -32,6 +32,7 @@ return {
             function() vim.lsp.buf.definition() end,
             desc = "Ir a la definición (LSP)",
           },
+
           -- TECLA: SHIFT
           -- Shift + Flechas: Seleccionar
           ["<S-Up>"] = { "v<Up>", desc = "Seleccionar arriba" },
@@ -49,19 +50,23 @@ return {
             function() vim.lsp.buf.references() end,
             desc = "Ver referencias (LSP)",
           },
+
           -- TECLA: ALT
-          -- Guardar sin formatear
+          -- Alt + s: Guardar sin formatear
           ["<A-s>"] = { ":noautocmd w<cr>", desc = "Guardar sin formatear" },
           -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover línea hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover línea hacia abajo" },
-          -- Mover buffers con Shift + Flechas
+          -- Alt + Flecha Derecha: Mover pestaña de archivo hacia la derecha
           ["<A-Right>"] = { function() require("astrocore.buffer").move(1) end, desc = "Mover buffer a la derecha" },
+          -- Alt + Flecha Izquierda: Mover pestaña de archivo hacia la izquierda
           ["<A-Left>"] = { function() require("astrocore.buffer").move(-1) end, desc = "Mover buffer a la izquierda" },
-          -- Redimensionar Explorador de Archivos
+          -- Alt + .: Aumentar ancho del explorador de archivos
           ["<A-.>"] = { ":vertical resize +5<cr>", desc = "Aumentar ancho de ventana" },
+          -- Alt + ,: Disminuir ancho del explorador de archivos
           ["<A-,>"] = { ":vertical resize -5<cr>", desc = "Disminuir ancho de ventana" },
+
           -- TECLA: CTRL
           -- Ctrl + .: Modo Insertar
           ["<C-.>"] = { "a", desc = "Entrar en modo insertar" },
@@ -104,6 +109,7 @@ return {
             end,
             desc = "Cerrar pestaña",
           },
+
           -- COMBINACIÓN: CTRL + ALT
           -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
           ["<C-A-Left>"] = { "<C-w>h", desc = "Focus split izquierdo" },
@@ -113,7 +119,13 @@ return {
           ["<C-A-Up>"] = { "<C-w>k", desc = "Focus split superior" },
           -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
           ["<C-A-Down>"] = { "<C-w>j", desc = "Focus split inferior" },
+
+          -- COMBINACIÓN: CTRL + SHIFT
+          -- Ctrl + Shift + s: Guardar todo los archivos
+          ["<C-S-s>"] = { "<cmd>wa<cr>", desc = "Guardar todos los buffers" },
         },
+
+
         i = {
           -- OTRAS TECLAS
           -- Inicio: Dirije al primer carácter con contenido
@@ -122,6 +134,7 @@ return {
           ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ir a la definición" },
           -- Shift + F12: Ver referencias de Variable (dónde se usa la variable)
           ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar símbolo" },
+
           -- TECLA: SHIFT
           -- Shift + Teclas: Seleccionar
           ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar arriba" },
@@ -132,16 +145,19 @@ return {
           ["<S-Home>"] = { "<Esc>v^", desc = "Seleccionar hasta el inicio de línea" },
           -- Shift + Fin: Sale del modo insertar y selecciona hasta el final
           ["<S-End>"] = { "<Esc>v$", desc = "Seleccionar hasta el final de línea" },
+
           -- TECLA: ALT
-          -- Redimensionar Explorador de Archivos
+          -- Alt + .: Aumentar ancho del explorador de archivos
           ["<A-.>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Aumentar ancho" },
+          -- Alt + ,: Disminuir ancho del explorador de archivos
           ["<A-,>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Disminuir ancho" },
-          -- Guardar sin Formatear
+          -- Alt + s: Guardar sin formatear
           ["<A-s>"] = { "<Esc>:noautocmd w<cr>a", desc = "Guardar sin formatear" },
           -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { "<Esc>:m .-2<cr>==gi", desc = "Mover línea hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { "<Esc>:m .+1<cr>==gi", desc = "Mover línea hacia abajo" },
+
           -- TECLA: CTRL
           -- Ctrl + .: Modo Normal
           ["<C-.>"] = { "<cmd>stopinsert<cr>", desc = "Entra en el modo normal" },
@@ -173,6 +189,7 @@ return {
           ["<C-|>"] = { "<Esc><cmd>vsplit<cr>a", desc = "Vertical Split" },
           -- Ctrl + -: Split Horizontal
           ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Horizontal Split" }, 
+
           -- COMBINACIÓN: CTRL + ALT
           -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
           ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Focus split izquierdo" },
@@ -182,7 +199,13 @@ return {
           ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Focus split superior" },
           -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
           ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Focus split inferior" },
+
+          -- COMBINACIÓN: CTRL + SHIFT
+          -- Ctrl + Shift + s: Guardar todo los archivos
+          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>a", desc = "Guardar todos los buffers" },
         },
+
+
         v = {
           -- OTRAS TECLAS
           -- Tabulador: Indentar hacia la derecha
@@ -193,6 +216,7 @@ return {
           ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ir a la definición" },
           -- Shift + F12: Ver referencias de variable (dónde se usa la variable)
           ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar símbolo" },
+
           -- TECLA: SHIFT
           -- Shift + Teclas: Seleccionar
           ["<S-Up>"] = { "<Up>", desc = "Extender selección arriba" },
@@ -205,16 +229,19 @@ return {
           ["<S-End>"] = { "$", desc = "Extender selección al final" },
           -- Shift + Tabulador: Desindentar hacia la izquierda
           ["<S-Tab>"] = { "<gv", desc = "Desindentar bloque" },
+
           -- TECLA: ALT
-          -- Redimensionar Explorador de Archivos
+          -- Alt + .: Aumentar ancho del explorador de archivos
           ["<A-.>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Aumentar ancho" },
+          -- Alt + ,: Disminuir ancho del explorador de archivos
           ["<A-,>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Disminuir ancho" },
-          -- Guardar sin Formatear
+          -- Alt + s: Guardar sin formatear
           ["<A-s>"] = { "<Esc>:noautocmd w<cr>gv", desc = "Guardar sin formatear" },
           -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
           ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover bloque hacia arriba" },
           -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
           ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover bloque hacia abajo" },
+
           -- TECLA: CTRL
           -- Ctrl + z: Deshacer
           ["<C-z>"] = { "<Esc>ua", desc = "Undo" },
@@ -246,6 +273,7 @@ return {
           ["<C-|>"] = { "<Esc><cmd>vsplit<cr>", desc = "Vertical Split" },
           -- Ctrl + -: Split Horizontal
           ["<C-->"] = { "<Esc><cmd>split<cr>", desc = "Horizontal Split" },
+
           -- COMBINACIÓN: CTRL + ALT
           -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
           ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Focus split izquierdo" },
@@ -255,8 +283,13 @@ return {
           ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Focus split arriba" },
           -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
           ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Focus split inferior" },
+
+          -- COMBINACIÓN: CTRL + SHIFT
+          -- Ctrl + Shift + s: Guardar todo los archivos
+          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar todos los buffers" },
         }
       },
     },
   },
 }
+
