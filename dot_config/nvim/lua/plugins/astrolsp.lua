@@ -39,24 +39,37 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
-    },
-    -- customize language server configuration options passed to `lspconfig`
-    ---@diagnostic disable: missing-fields
-    config = {
-      -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
       pyright = {
         settings = {
           python = {
             analysis = {
-              typeCheckingMode = "off",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
             },
           },
         },
-      }
+      },
+    },
+    -- customize language server configuration options passed to `lspconfig`
+    ---@diagnostic disable: missing-fields
+    config = {
+      pyright = {
+        settings = {
+          python = {
+            venvPath = ".",
+            venv = ".venv",
+            analysis = {
+              autoSearchPaths = true, 
+              useLibraryCodeForTypes = true,
+              typeCheckingMode = "off", 
+              diagnosticMode = "openFilesOnly", 
+              reportUnusedImport = "none",
+              reportUnusedVariable = "none",
+            },
+          },
+        },
+      },
     },
     -- customize how language servers are attached
     handlers = {

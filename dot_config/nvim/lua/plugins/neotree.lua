@@ -33,15 +33,12 @@ return {
           require("neo-tree.command").execute({ action = "show" })
         end,
       },
-      --- NUEVO EVENT HANDLER ---
       {
         event = "neo_tree_buffer_leave",
         handler = function()
-          -- Esta lógica detecta si al cerrar un archivo nos quedamos sin búferes listados
           vim.schedule(function()
             local bufs = vim.fn.getbufinfo({ buflisted = 1 })
             if #bufs == 0 then
-              -- Si no hay más archivos, nos aseguramos de que Neo-tree esté visible
               require("neo-tree.command").execute({ action = "show", source = "filesystem" })
             end
           end)
