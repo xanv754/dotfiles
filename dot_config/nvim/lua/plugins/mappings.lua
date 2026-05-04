@@ -35,10 +35,10 @@ return {
 
           -- TECLA: SHIFT
           -- Shift + Flechas: Seleccionar
-          ["<S-Up>"] = { "v<Up>", desc = "Seleccionar arriba" },
-          ["<S-Down>"] = { "v<Down>", desc = "Seleccionar abajo" },
-          ["<S-Left>"] = { "v<Left>", desc = "Seleccionar izquierda" },
-          ["<S-Right>"] = { "v<Right>", desc = "Seleccionar derecha" },
+          ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar arriba" },
+          ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar abajo" },
+          ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar izquierda" },
+          ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar derecha" },
           -- Shift + Tabulador: Desindentación hacia la izquierda
           ["<S-Tab>"] = { "<<", desc = "Desindentar línea" },
           -- Shift + Inicio: Selecciona desde el cursor hasta el primer carácter de la línea
