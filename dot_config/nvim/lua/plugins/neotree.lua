@@ -1,11 +1,10 @@
--- lua/plugins/neotree.lua
-
 ---@type LazySpec
 return {
   "nvim-neo-tree/neo-tree.nvim",
   opts = {
+    close_if_last_window = false, -- No cierra neo-tree si es la última ventana
+    open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
     filesystem = {
-      auto_clean_config = false,
       follow_current_file = {
         enabled = true,
       },
@@ -26,24 +25,18 @@ return {
         end,
       },
     },
-    event_handlers = {
-      {
-        event = "file_opened",
-        handler = function(file_path)
-          require("neo-tree.command").execute({ action = "show" })
-        end,
-      },
-      {
-        event = "neo_tree_buffer_leave",
-        handler = function()
-          vim.schedule(function()
-            local bufs = vim.fn.getbufinfo({ buflisted = 1 })
-            if #bufs == 0 then
-              require("neo-tree.command").execute({ action = "show", source = "filesystem" })
-            end
-          end)
-        end,
-      },
-    },
   },
+  -- Abre neo-tree automáticamente al iniciar nvim
+  init = function()
+    vim.api.nvim_create_autocmd("VimEnter", {
+      callback = function()
+        local arg = vim.fn.argv(0)
+        if not arg or arg == "" or vim.fn.isdirectory(arg) == 1 then
+          return
+        end
+        require("neo-tree.command").execute({ action = "show", source = "filesystem" })
+        vim.cmd("wincmd l")
+      end,
+    })
+  end,
 }

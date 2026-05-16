@@ -9,8 +9,6 @@ return {
       },
       mappings = {
         n = {
-          -- OTRAS TECLAS
-          -- F2: Cambio de Nombre de Variables
           ["<F2>"] = {
             function()
               local clients = vim.lsp.get_active_clients({ bufnr = 0 })
@@ -21,151 +19,79 @@ return {
                 vim.cmd(":%s/\\<" .. word .. "\\>/")
               end
             end,
-            desc = "Rename symbol (LSP or basic)",
+            desc = "Renombrar: Variables",
           },
-          -- Tabulador: Indentación hacia la derecha
-          ["<Tab>"] = { ">>", desc = "Indentar línea" },
-          -- Inicio: Dirije al primer carácter con contenido
-          ["<Home>"] = { "^", desc = "Ir al inicio del contenido" },
-          -- F12: Ir a la definición de la variable
+          ["<S-F12>"] = { -- TODO: Hacer que funcione
+            function() vim.lsp.buf.references() end,
+            desc = "Ver: Referencias",
+          },
           ["<F12>"] = {
             function() vim.lsp.buf.definition() end,
-            desc = "Ir a la definición (LSP)",
+            desc = "Ver: Definición",
           },
-
-          -- TECLA: SHIFT
-          -- Shift + Flechas: Seleccionar
-          ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar arriba" },
-          ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar abajo" },
-          ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar izquierda" },
-          ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar derecha" },
-          -- Shift + Tabulador: Desindentación hacia la izquierda
-          ["<S-Tab>"] = { "<<", desc = "Desindentar línea" },
-          -- Shift + Inicio: Selecciona desde el cursor hasta el primer carácter de la línea
-          ["<S-Home>"] = { "v^", desc = "Seleccionar hasta el inicio de línea" },
-          -- Shift + Fin: Selecciona desde el cursor hasta el final de la línea
-          ["<S-End>"] = { "v$", desc = "Seleccionar hasta el final de línea" },
-          -- Shift + F12: Ver referencias de Variables (dónde se usa la variable)
-          ["<S-F12>"] = {
-            function() vim.lsp.buf.references() end,
-            desc = "Ver referencias (LSP)",
+          ["<A-Right>"] = { 
+            function() require("astrocore.buffer").move(1) end, 
+            desc = "Mover: Pestaña de archivo hacia la derecha" 
           },
-
-          -- TECLA: ALT
-          -- Alt + s: Guardar sin formatear
-          ["<A-s>"] = { ":noautocmd w<cr>", desc = "Guardar sin formatear" },
-          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
-          ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover línea hacia arriba" },
-          -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
-          ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover línea hacia abajo" },
-          -- Alt + Flecha Derecha: Mover pestaña de archivo hacia la derecha
-          ["<A-Right>"] = { function() require("astrocore.buffer").move(1) end, desc = "Mover buffer a la derecha" },
-          -- Alt + Flecha Izquierda: Mover pestaña de archivo hacia la izquierda
-          ["<A-Left>"] = { function() require("astrocore.buffer").move(-1) end, desc = "Mover buffer a la izquierda" },
-          -- Alt + .: Aumentar ancho del explorador de archivos
-          ["<A-.>"] = { ":vertical resize +5<cr>", desc = "Aumentar ancho de ventana" },
-          -- Alt + ,: Disminuir ancho del explorador de archivos
-          ["<A-,>"] = { ":vertical resize -5<cr>", desc = "Disminuir ancho de ventana" },
-
-          -- TECLA: CTRL
-          -- Ctrl + .: Modo Insertar
-          ["<C-.>"] = { "a", desc = "Entrar en modo insertar" },
-          -- Ctrl + Q: Salir
-          ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
-          -- Ctrl + S: Guardar Archivo
-          ["<C-s>"] = { ":w<cr>", desc = "Save File" },
-          -- Ctrl + Z: Deshacer
-          ["<C-z>"] = { "u", desc = "Undo" },
-          -- Ctrl + Y: Rehacer
-          ["<C-y>"] = { "<C-r>", desc = "Redo" },
-          -- Ctrl + V: Pegar
-          ["<C-v>"] = { '"+p<cmd>startinsert!<cr>', desc = "Pegar desde el portapapeles" },
-          -- Ctrl + E: Búsqueda de Archivos
-          ["<C-e>"] = { function() require("telescope.builtin").find_files() end, desc = "Buscar archivos" },
-          -- Ctrl + Flecha Derecha: Siguiente pestaña
+          ["<A-Left>"] = { 
+            function() require("astrocore.buffer").move(-1) end, 
+            desc = "Mover: Pestaña de archivo hacia a la izquierda" 
+          },
+          ["<C-w>"] = {
+            function()
+              local bufs = vim.fn.getbufinfo { buflisted = true }
+              require("astrocore.buffer").close(0)
+              if #bufs <= 1 then vim.cmd "enew" end
+            end,
+            desc = "Cerrar: Archivo",
+          },
+          ["<C-e>"] = { 
+            function() require("telescope.builtin").find_files() end, 
+            desc = "Buscar: Archivo" 
+          },
           ["<C-Right>"] = {
             function() require("astrocore.buffer").nav(vim.v.count1) end,
-            desc = "Siguiente buffer",
+            desc = "Mover: Enfoque hacia la pestaña de la derecha",
           },
-          -- Ctrl + Flecha Izquierda: Pestaña anterior
           ["<C-Left>"] = {
             function() require("astrocore.buffer").nav(-vim.v.count1) end,
-            desc = "Buffer anterior",
+            desc = "Mover: Enfoque hacia la pestaña de la izquierda",
           },
-          -- Ctrl + |: Split Vertical
-          ["<C-|>"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" },
-          -- Ctrl + -: Split Horizontal
-          ["<C-->"] = { "<cmd>split<cr>", desc = "Horizontal Split" },
-          -- Ctrl + D: Selecciona la palabra actual e inicia el multicursor
-          ["<C-d>"] = { "<Plug>(VM-Find-Under)", desc = "Selección múltiple" },
-          -- Ctrl + F: Abre el buscador de palabras en el archivo actual
-          ["<C-f>"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buscar en el archivo" },
-          -- Ctrl + W: Cierra el Archivo
-          ["<C-w>"] = {
-            function()
-              local bufs = vim.fn.getbufinfo { buflisted = true }
-              require("astrocore.buffer").close(0)
-              if #bufs <= 1 then vim.cmd "enew" end
-            end,
-            desc = "Cerrar pestaña",
-          },
-
-          -- COMBINACIÓN: CTRL + ALT
-          -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
-          ["<C-A-Left>"] = { "<C-w>h", desc = "Focus split izquierdo" },
-          -- Ctrl + Alt + Flecha Derecha: Navegar al split de la derecha
-          ["<C-A-Right>"] = { "<C-w>l", desc = "Focus split derecho" },
-          -- Ctrl + Alt + Flecha Arriba: Navegar al split de arriba
-          ["<C-A-Up>"] = { "<C-w>k", desc = "Focus split superior" },
-          -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
-          ["<C-A-Down>"] = { "<C-w>j", desc = "Focus split inferior" },
-
-          -- COMBINACIÓN: CTRL + SHIFT
-          -- Ctrl + Shift + s: Guardar todo los archivos
-          ["<C-S-s>"] = { "<cmd>wa<cr>", desc = "Guardar todos los buffers" },
+          ["<Tab>"] = { ">>", desc = "Identación: Añadir" },
+          ["<Home>"] = { "^", desc = "Mover: Al inicio del archivo" },
+          ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar: Texto hacia arriba" },
+          ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar: Texto hacia abajo" },
+          ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar: Texto hacia la izquierda" },
+          ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar: Texto hacia la derecha" },
+          ["<S-Tab>"] = { "<<", desc = "Identación: Quitar" },
+          ["<S-Home>"] = { "v^", desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea" },
+          ["<S-End>"] = { "v$", desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea" },
+          ["<A-s>"] = { ":noautocmd w<cr>", desc = "Guardar: Archivo sin formatear" },
+          ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover: Línea hacia arriba" },
+          ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover: Línea hacia abajo" },
+          ["<A-.>"] = { ":vertical resize -5<cr>", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { ":vertical resize +5<cr>", desc = "Ventana: Disminuir ancho" },
+          ["<C-a>"] = { "ggVG", desc = "Seleccionar: Todo" },
+          ["<C-.>"] = { "a", desc = "Cambiar: Al modo insertar" },
+          ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
+          ["<C-s>"] = { ":w<cr>", desc = "Guardar: Archivo" },
+          ["<C-z>"] = { "u", desc = "Deshacer" },
+          ["<C-y>"] = { "<C-r>", desc = "Rehacer" },
+          ["<C-v>"] = { '"+p<cmd>startinsert!<cr>', desc = "Pegar: Desde el portapapeles" },
+          ["<C-x>"] = { '"+dd', desc = "Cortar: Desde el portapapeles" },
+          ["<C-c>"] = { '"+yy', desc = "Copiar: Desde el portapapeles" },
+          ["<C-|>"] = { "<cmd>vsplit<cr>", desc = "Abrir: Nueva ventana hacia la derecha" },
+          ["<C-->"] = { "<cmd>split<cr>", desc = "Abrir: Nueva ventana hacia abajo" },
+          ["<C-d>"] = { "<Plug>(VM-Find-Under)", desc = "Seleccionar: Múltiple texto" },
+          ["<C-f>"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buscar: En el archivo" },
+          ["<C-A-Left>"] = { "<C-w>h", desc = "Mover: Enfoque hacia la ventana de la izquierda" },
+          ["<C-A-Right>"] = { "<C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
+          ["<C-A-Up>"] = { "<C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
+          ["<C-A-Down>"] = { "<C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
+          ["<C-S-s>"] = { "<cmd>wa<cr>", desc = "Guardar: Todos los archivos" },
+          ["<C-S-p>"] = { "<Esc><cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         },
-
-
         i = {
-          -- OTRAS TECLAS
-          -- Inicio: Dirije al primer carácter con contenido
-          ["<Home>"] = { "<Esc>^i", desc = "Ir al inicio del contenido" },
-          -- F12: Ir a la definición
-          ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ir a la definición" },
-          -- Shift + F12: Ver referencias de Variable (dónde se usa la variable)
-          ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar símbolo" },
-
-          -- TECLA: SHIFT
-          -- Shift + Teclas: Seleccionar
-          ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar arriba" },
-          ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar abajo" },
-          ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar izquierda" },
-          ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar derecha" },
-          -- Shift + Inicio: Selecciona hasta el inicio y queda en modo visual
-          ["<S-Home>"] = { "<Esc>v^", desc = "Seleccionar hasta el inicio de línea" },
-          -- Shift + Fin: Sale del modo insertar y selecciona hasta el final
-          ["<S-End>"] = { "<Esc>v$", desc = "Seleccionar hasta el final de línea" },
-
-          -- TECLA: ALT
-          -- Alt + .: Aumentar ancho del explorador de archivos
-          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Aumentar ancho" },
-          -- Alt + ,: Disminuir ancho del explorador de archivos
-          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Disminuir ancho" },
-          -- Alt + s: Guardar sin formatear
-          ["<A-s>"] = { "<Esc>:noautocmd w<cr>a", desc = "Guardar sin formatear" },
-          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
-          ["<A-Up>"] = { "<Esc>:m .-2<cr>==gi", desc = "Mover línea hacia arriba" },
-          -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
-          ["<A-Down>"] = { "<Esc>:m .+1<cr>==gi", desc = "Mover línea hacia abajo" },
-
-          -- TECLA: CTRL
-          -- Ctrl + .: Modo Normal
-          ["<C-.>"] = { "<cmd>stopinsert<cr>", desc = "Entra en el modo normal" },
-          -- Ctrl + Q: Salir del Editor
-          ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
-          -- Ctrl + S: Guardar
-          ["<C-s>"] = { "<Esc>:w<cr>a", desc = "Save File" },
-          -- Ctrl + W: Cerrar Archivo
           ["<C-w>"] = {
             function()
               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
@@ -173,85 +99,42 @@ return {
               require("astrocore.buffer").close(0)
               if #bufs <= 1 then vim.cmd "enew" end
             end,
-            desc = "Cerrar pestaña desde modo insertar",
+            desc = "Cerrar: Archivo",
           },
-          -- Ctrl + Z: Deshacer
-          ["<C-z>"] = { "<Esc>ua", desc = "Undo" },
-          -- Ctrl + Y: Rehacer
-          ["<C-y>"] = { "<Esc><C-r>a", desc = "Redo" },
-          -- Ctrl + V: Pegar
-          ["<C-v>"] = { '<C-r>+', desc = "Pegar desde el portapapeles" },         
-          -- Ctrl + X: Cortar
-          ["<C-x>"] = { '<Esc>"+di', desc = "Cortar al portapapeles" },
-          -- Ctrl + F: Abre el buscador de palabras en el archivo actual
-          ["<C-f>"] = { "<Esc><cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buscar en el archivo" },
-          -- Ctrl + |: Split Vertical
-          ["<C-|>"] = { "<Esc><cmd>vsplit<cr>a", desc = "Vertical Split" },
-          -- Ctrl + -: Split Horizontal
-          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Horizontal Split" }, 
-
-          -- COMBINACIÓN: CTRL + ALT
-          -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
-          ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Focus split izquierdo" },
-          -- Ctrl + Alt + Flecha Derecha: Navegar al split de la derecha
-          ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Focus split derecho" },
-          -- Ctrl + Alt + Flecha Arriba: Navegar al split de arriba
-          ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Focus split superior" },
-          -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
-          ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Focus split inferior" },
-
-          -- COMBINACIÓN: CTRL + SHIFT
-          -- Ctrl + Shift + s: Guardar todo los archivos
-          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>a", desc = "Guardar todos los buffers" },
+          ["<Home>"] = { "<Esc>^i", desc = "Mover: Al inicio del archivo" },
+          ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ver: Definición" },
+          ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar: Variables" },
+          ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar: Texto hacia arriba" },
+          ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar: Texto hacia abajo" },
+          ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar: Texto hacia la izquierda" },
+          ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar hacia derecha" },
+          ["<S-Home>"] = { "<Esc>v^", desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea" },
+          ["<S-End>"] = { "<Esc>v$", desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea" },
+          ["<A-s>"] = { "<Esc>:noautocmd w<cr>a", desc = "Guardar: Archivo sin formatear" },
+          ["<A-Up>"] = { "<Esc>:m .-2<cr>==gi", desc = "Mover: Línea hacia arriba" },
+          ["<A-Down>"] = { "<Esc>:m .+1<cr>==gi", desc = "Mover: Línea hacia abajo" },
+          ["<A-.>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Ventana: Disminuir ancho" },
+          ["<C-a>"] = { "<Esc>ggVG", desc = "Seleccionar: Todo" },
+          ["<C-.>"] = { "<cmd>stopinsert<cr>", desc = "Entra en modo normal" },
+          ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
+          ["<C-s>"] = { "<Esc>:w<cr>a", desc = "Guardar: Archivo" },
+          ["<C-z>"] = { "<Esc>ua", desc = "Deshacer" },
+          ["<C-y>"] = { "<Esc><C-r>a", desc = "Rehacer" },
+          ["<C-v>"] = { '<C-r>+', desc = "Pegar: Desde el portapapeles" },         
+          ["<C-x>"] = { '<Esc>"+di', desc = "Cortar: Desde el portapapeles" },
+          ["<C-c>"] = { '<Esc>"+yya', desc = "Copiar: Desde el portapapeles" },
+          ["<C-|>"] = { "<Esc><cmd>vsplit<cr>a", desc = "Abrir: Nueva ventana hacia la derecha" },
+          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Abrir: Nueva ventana hacia abajo" }, 
+          ["<C-f>"] = { "<Esc><cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buscar: En el archivo" },
+          ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Mover: Enfoque hacia la ventana de la izquierda" },
+          ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
+          ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
+          ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
+          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>a", desc = "Guardar: Todos los archivos" },
+          ["<C-S-p>"] = { "<cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         },
-
-
         v = {
-          -- OTRAS TECLAS
-          -- Tabulador: Indentar hacia la derecha
-          ["<Tab>"] = { ">gv", desc = "Indentar bloque" },
-          -- Inicio: Dirije al primer carácter con contenido
-          ["<Home>"] = { "^", desc = "Ir al inicio del contenido" },
-          -- F12: Ir a la definición de variable
-          ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ir a la definición" },
-          -- Shift + F12: Ver referencias de variable (dónde se usa la variable)
-          ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar símbolo" },
-
-          -- TECLA: SHIFT
-          -- Shift + Teclas: Seleccionar
-          ["<S-Up>"] = { "<Up>", desc = "Extender selección arriba" },
-          ["<S-Down>"] = { "<Down>", desc = "Extender selección abajo" },
-          ["<S-Left>"] = { "<Left>", desc = "Extender selección izquierda" },
-          ["<S-Right>"] = { "<Right>", desc = "Extender selección derecha" },
-          --- Shift + Inicio: Selecciona hasta el inicio
-          ["<S-Home>"] = { "^", desc = "Extender selección al inicio" },
-          --- Shift + Fin: Selecciona hasta el fin
-          ["<S-End>"] = { "$", desc = "Extender selección al final" },
-          -- Shift + Tabulador: Desindentar hacia la izquierda
-          ["<S-Tab>"] = { "<gv", desc = "Desindentar bloque" },
-
-          -- TECLA: ALT
-          -- Alt + .: Aumentar ancho del explorador de archivos
-          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Aumentar ancho" },
-          -- Alt + ,: Disminuir ancho del explorador de archivos
-          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Disminuir ancho" },
-          -- Alt + s: Guardar sin formatear
-          ["<A-s>"] = { "<Esc>:noautocmd w<cr>gv", desc = "Guardar sin formatear" },
-          -- Alt + Flecha Arriba: Mover línea seleccionada hacia arriba
-          ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover bloque hacia arriba" },
-          -- Alt + Flecha Abajo: Mover línea seleccionada hacia abajo
-          ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover bloque hacia abajo" },
-
-          -- TECLA: CTRL
-          -- Ctrl + z: Deshacer
-          ["<C-z>"] = { "<Esc>ua", desc = "Undo" },
-          -- Ctrl + .: Modo Normal
-          ["<C-.>"] = { "<Esc>", desc = "Entrar al modo normal" },
-          -- Ctrl + Q: Salir del Editor
-          ["<C-q>"] = { "<cmd>q<cr>", desc = "Salir (Quit)" },
-          -- Ctrl + S: Guardar Archivo
-          ["<C-s>"] = { "<cmd>w<cr><Esc>", desc = "Save File" },
-          -- Ctrl + W: Cerrar Archivo
           ["<C-w>"] = {
             function()
               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
@@ -259,34 +142,42 @@ return {
               require("astrocore.buffer").close(0)
               if #bufs <= 1 then vim.cmd "enew" end
             end,
-            desc = "Cerrar pestaña desde modo visual",
+            desc = "Cerrar: Archivo",
           },
-          -- Ctrl + X: Cortar
-          ["<C-x>"] = { '"+d', desc = "Cortar al portapapeles" },
-          -- Ctrl + C: Copiar
+          ["<Tab>"] = { ">gv", desc = "Identación: Añadir" },
+          ["<Home>"] = { "^", desc = "Mover: Al inicio del archivo" },
+          ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ver: Definición" },
+          ["<F2>"] = { "<Esc><cmd>lua vim.lsp.buf.rename()<CR>", desc = "Renombrar: Variables" },
+          ["<S-Up>"] = { "<Up>", desc = "Seleccionar: Texto hacia arriba" },
+          ["<S-Down>"] = { "<Down>", desc = "Seleccionar: Texto hacia abajo" },
+          ["<S-Left>"] = { "<Left>", desc = "Seleccionar: Texto hacia la izquierda" },
+          ["<S-Right>"] = { "<Right>", desc = "Seleccionar: Texto hacia la derecha" },
+          ["<S-Tab>"] = { "<gv", desc = "Identación: Quitar" },
+          ["<S-Home>"] = { "^", desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea" },
+          ["<S-End>"] = { "$", desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea" },
+          ["<A-s>"] = { "<Esc>:noautocmd w<cr>gv", desc = "Guardar: Archivo sin formatear" },
+          ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover: Línea hacia arriba" },
+          ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover: Línea hacia abajo" },
+          ["<A-.>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Ventana: Disminuir ancho" },
+          ["<C-a>"] = { "<Esc>ggVG", desc = "Seleccionar: Todo" },          
+          ["<C-.>"] = { "<Esc>", desc = "Entrar en modo normal" },
+          ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
+          ["<C-s>"] = { "<cmd>w<cr><Esc>", desc = "Guardar: Archivo" },
+          ["<C-z>"] = { "<Esc>ua", desc = "Deshacer" },
+          ["<C-y>"] = { "<Esc><C-r>", desc = "Rehacer" },
+          ["<C-v>"] = { '"+p<cmd>startinsert!<cr>', desc = "Pegar: Desde el portapapeles" },
+          ["<C-x>"] = { '"+d', desc = "Cortar: Desde el portapapeles" },
           ["<C-c>"] = { '"+y', desc = "Copiar al portapapeles" },
-          -- Ctrl + V: Pegar
-          ["<C-v>"] = { '"+p<cmd>startinsert!<cr>', desc = "Pegar sobre selección" },
-          -- Ctrl + D: Busca la siguiente ocurrencia de lo seleccionado
-          ["<C-d>"] = { "<Plug>(VM-Find-Subword-Under)", desc = "Selección múltiple" },
-          -- Ctrl + |: Split Vertical
-          ["<C-|>"] = { "<Esc><cmd>vsplit<cr>", desc = "Vertical Split" },
-          -- Ctrl + -: Split Horizontal
-          ["<C-->"] = { "<Esc><cmd>split<cr>", desc = "Horizontal Split" },
-
-          -- COMBINACIÓN: CTRL + ALT
-          -- Ctrl + Alt + Flecha Izquierda: Navegar al split de la izquierda
-          ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Focus split izquierdo" },
-          -- Ctrl + Alt + Flecha Derecha: Navegar al split de la derecha
-          ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Focus split derecho" },
-          -- Ctrl + Alt + Flecha Arriba: Navegar al split de arriba
-          ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Focus split arriba" },
-          -- Ctrl + Alt + Flecha Abajo: Navegar al split de abajo
-          ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Focus split inferior" },
-
-          -- COMBINACIÓN: CTRL + SHIFT
-          -- Ctrl + Shift + s: Guardar todo los archivos
-          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar todos los buffers" },
+          ["<C-|>"] = { "<Esc><cmd>vsplit<cr>", desc = "Abrir: Nueva ventana hacia la derecha" },
+          ["<C-->"] = { "<Esc><cmd>split<cr>", desc = "Abrir: Nueva ventana hacia abajo" },
+          ["<C-d>"] = { "<Plug>(VM-Find-Subword-Under)", desc = "Seleccionar: Múltiple texto" },
+          ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Mover: Enfoque hacia la ventana de la izquierda" },
+          ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
+          ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
+          ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
+          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar: Todos los archivos" },
+          ["<C-S-p>"] = { "<cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         }
       },
     },

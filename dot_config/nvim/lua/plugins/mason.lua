@@ -1,27 +1,31 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- Customize Mason
-
 ---@type LazySpec
 return {
-  -- use mason-tool-installer for automatically installing Mason packages
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    -- overrides `require("mason-tool-installer").setup(...)`
     opts = {
-      -- Make sure to use the names found in `:Mason`
       ensure_installed = {
-        -- install language servers
+        -- LSPs
+        "pyright",
+        "typescript-language-server",
+        "html-lsp",
+        "css-lsp",
+        "bash-language-server",
+        "rust-analyzer",
         "lua-language-server",
 
-        -- install formatters
-        "stylua",
+        -- Formatters
+        "stylua",      -- Lua
+        "prettier",    -- TS, HTML, CSS, JSON, YAML
+        "black",       -- Python
+        "shfmt",       -- Bash
 
-        -- install debuggers
-        "debugpy",
+        -- Linters
+        "ruff",        -- Python
+        "shellcheck",  -- Bash
 
-        -- install any other package
-        "tree-sitter-cli",
+        -- DAP
+        "debugpy",     -- Python
+        "codelldb",    -- Rust
       },
     },
   },

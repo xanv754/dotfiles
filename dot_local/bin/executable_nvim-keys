@@ -1,0 +1,250 @@
+#!/usr/bin/env python3
+"""
+nvim-keys: CLI interactivo para visualizar keymaps de AstroNvim.
+Requiere: fzf instalado en el sistema.
+
+Uso:
+    nvim-keys [ruta_al_mappings.lua]
+    nvim-keys  # usa ~/.config/nvim/lua/plugins/mappings.lua por defecto
+"""
+
+import re
+import sys
+import subprocess
+from pathlib import Path
+
+# --- Configuración ---
+DEFAULT_PATH = Path.home() / ".config/nvim/lua/plugins/mappings.lua"
+
+MODE_LABELS = {
+    "n": "NORMAL",
+    "i": "INSERT",
+    "v": "VISUAL",
+}
+
+MODE_COLORS = {
+    "n": "\033[94m",  # azul
+    "i": "\033[92m",  # verde
+    "v": "\033[93m",  # amarillo
+}
+
+RESET = "\033[0m"
+BOLD = "\033[1m"
+DIM = "\033[2m"
+
+# Modificadores: orden importa (combinaciones primero)
+_MOD_MAP = [
+    (
+        re.compile(r"<C-A-([^>]+)>", re.IGNORECASE),
+        lambda m: f"Ctrl + Alt + {_expand_key(m.group(1))}",
+    ),
+    (
+        re.compile(r"<C-S-([^>]+)>", re.IGNORECASE),
+        lambda m: f"Ctrl + Shift + {_expand_key(m.group(1))}",
+    ),
+    (
+        re.compile(r"<C-([^>]+)>", re.IGNORECASE),
+        lambda m: f"Ctrl + {_expand_key(m.group(1))}",
+    ),
+    (
+        re.compile(r"<S-([^>]+)>", re.IGNORECASE),
+        lambda m: f"Shift + {_expand_key(m.group(1))}",
+    ),
+    (
+        re.compile(r"<A-([^>]+)>", re.IGNORECASE),
+        lambda m: f"Alt + {_expand_key(m.group(1))}",
+    ),
+    (re.compile(r"<([^>]+)>", re.IGNORECASE), lambda m: _expand_key(m.group(1))),
+]
+
+_KEY_NAMES = {
+    "up": "↑",
+    "down": "↓",
+    "left": "←",
+    "right": "→",
+    "home": "Inicio",
+    "end": "Fin",
+    "tab": "Tab",
+    "esc": "Esc",
+    "cr": "Enter",
+    "bs": "Backspace",
+    "space": "Espacio",
+    "bar": "|",
+    "minus": "-",
+    "f1": "F1",
+    "f2": "F2",
+    "f3": "F3",
+    "f4": "F4",
+    "f5": "F5",
+    "f6": "F6",
+    "f7": "F7",
+    "f8": "F8",
+    "f9": "F9",
+    "f10": "F10",
+    "f11": "F11",
+    "f12": "F12",
+}
+
+
+def _expand_key(raw: str) -> str:
+    """Convierte una tecla cruda (sin <>) a nombre legible."""
+    return _KEY_NAMES.get(raw.lower(), raw.upper() if len(raw) == 1 else raw)
+
+
+def humanize_key(key: str) -> str:
+    """Convierte notación Vim (<C-a>, <S-F12>, etc.) a texto legible."""
+    result = key
+    for pattern, replacer in _MOD_MAP:
+        new = pattern.sub(replacer, result)
+        if new != result:
+            return new  # una sola transformación por keymap
+    return result
+
+
+# --- Parser ---
+def parse_mappings(lua_path: Path) -> list[dict]:
+    """
+    Extrae los keymaps del archivo .lua.
+    Estrategia: localiza cada key entre corchetes, luego busca el `desc`
+    hacia adelante en el texto —sin límite de llaves anidadas—,
+    lo que cubre tanto mapeos directos como funciones anónimas.
+    Retorna lista de dicts: {mode, key, desc}
+    """
+    content = lua_path.read_text(encoding="utf-8")
+    entries = []
+
+    # Bloques por modo: n = { ... }, i = { ... }, v = { ... }
+    mode_block_re = re.compile(
+        r"\b([niv])\s*=\s*\{(.*?)\n\s*\}(?=\s*,?\s*\n\s*(?:[a-z]\s*=|\}))",
+        re.DOTALL,
+    )
+    # Posición de cada keymap dentro del bloque
+    key_pos_re = re.compile(r'\["([^"]+)"\]\s*=\s*\{', re.DOTALL)
+    # desc = "..." en cualquier parte después del keymap
+    desc_re = re.compile(r'desc\s*=\s*"([^"]+)"')
+
+    for mode_match in mode_block_re.finditer(content):
+        mode = mode_match.group(1)
+        block = mode_match.group(2)
+
+        for key_match in key_pos_re.finditer(block):
+            raw_key = key_match.group(1)
+            # Busca el desc desde la apertura de { de este keymap
+            search_from = key_match.end()
+            desc_match = desc_re.search(block, search_from)
+            if not desc_match:
+                continue
+
+            # Verifica que el desc pertenece a este keymap y no al siguiente
+            next_key = key_pos_re.search(block, search_from)
+            if next_key and desc_match.start() > next_key.start():
+                continue
+
+            entries.append(
+                {
+                    "mode": mode,
+                    "key": humanize_key(raw_key),
+                    "desc": desc_match.group(1),
+                }
+            )
+
+    return entries
+
+
+# --- Formateo para fzf ---
+def format_for_fzf(entries: list[dict]) -> tuple[list[str], int, int]:
+    """
+    Construye líneas con columnas de ancho fijo calculado dinámicamente.
+    Retorna (líneas, col_mode_width, col_key_width) para generar el header alineado.
+    """
+    labels = [MODE_LABELS.get(e["mode"], e["mode"].upper()) for e in entries]
+    keys = [e["key"] for e in entries]
+
+    col_mode = max((len(l) for l in labels), default=6)
+    col_key = max((len(k) for k in keys), default=10)
+
+    lines = []
+    for e, label, key in zip(entries, labels, keys):
+        lines.append(f"{label:<{col_mode}}  {key:<{col_key}}  {e['desc']}")
+
+    return lines, col_mode, col_key
+
+
+# --- Lanzar fzf ---
+def launch_fzf(entries: list[dict]) -> None:
+    fzf_lines, col_mode, col_key = format_for_fzf(entries)
+    fzf_input = "\n".join(fzf_lines)
+
+    header = f"{'MODO':<{col_mode}}  {'ATAJO':<{col_key}}  DESCRIPCIÓN"
+
+    fzf_cmd = [
+        "fzf",
+        "--ansi",
+        f"--header={header}",
+        "--header-lines=0",
+        "--prompt=  Buscar keymap: ",
+        "--pointer=▶",
+        "--layout=reverse",
+        "--height=80%",
+        "--border=rounded",
+        "--color=header:italic:underline,prompt:bold",
+        "--no-preview",
+    ]
+
+    try:
+        result = subprocess.run(
+            fzf_cmd,
+            input=fzf_input,
+            capture_output=False,
+            text=True,
+        )
+        # fzf retorna 130 si el user presiona Esc/Ctrl-C
+        sys.exit(0 if result.returncode in (0, 130) else result.returncode)
+    except FileNotFoundError:
+        print(
+            f"{BOLD}Error:{RESET} fzf no está instalado.\n"
+            "Instálalo con: sudo apt install fzf  (o tu package manager)",
+            file=sys.stderr,
+        )
+        fallback_display(entries)
+
+
+# --- Fallback sin fzf ---
+def fallback_display(entries: list[dict]) -> None:
+    """Muestra los keymaps tabulados en stdout si fzf no está disponible."""
+    current_mode = None
+    for e in sorted(entries, key=lambda x: x["mode"]):
+        if e["mode"] != current_mode:
+            current_mode = e["mode"]
+            color = MODE_COLORS.get(current_mode, "")
+            label = MODE_LABELS.get(current_mode, current_mode.upper())
+            print(f"\n{color}{BOLD}── {label} ──{RESET}")
+        print(f"  {BOLD}{e['key']:<25}{RESET}{DIM}{e['desc']}{RESET}")
+
+
+# --- Entrypoint ---
+def main() -> None:
+    lua_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PATH
+
+    if not lua_path.exists():
+        print(
+            f"{BOLD}Error:{RESET} No se encontró el archivo: {lua_path}\n"
+            f"Uso: nvim-keys [ruta_al_mappings.lua]",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    entries = parse_mappings(lua_path)
+
+    if not entries:
+        print(
+            f"{BOLD}Advertencia:{RESET} No se encontraron keymaps en {lua_path}.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    launch_fzf(entries)
+
+
+if __name__ == "__main__":
+    main()
