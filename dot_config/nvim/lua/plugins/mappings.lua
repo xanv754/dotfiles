@@ -4,18 +4,18 @@ return {
     opts = {
       options = {
         opt = {
-          clipboard = "unnamedplus"
-        }
+          clipboard = "unnamedplus",
+        },
       },
       mappings = {
         n = {
           ["<F2>"] = {
             function()
-              local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+              local clients = vim.lsp.get_active_clients { bufnr = 0 }
               if next(clients) ~= nil then
                 vim.lsp.buf.rename()
               else
-                local word = vim.fn.expand("<cword>")
+                local word = vim.fn.expand "<cword>"
                 vim.cmd(":%s/\\<" .. word .. "\\>/")
               end
             end,
@@ -29,13 +29,13 @@ return {
             function() vim.lsp.buf.definition() end,
             desc = "Ver: Definición",
           },
-          ["<A-Right>"] = { 
-            function() require("astrocore.buffer").move(1) end, 
-            desc = "Mover: Pestaña de archivo hacia la derecha" 
+          ["<A-Right>"] = {
+            function() require("astrocore.buffer").move(1) end,
+            desc = "Mover: Pestaña de archivo hacia la derecha",
           },
-          ["<A-Left>"] = { 
-            function() require("astrocore.buffer").move(-1) end, 
-            desc = "Mover: Pestaña de archivo hacia a la izquierda" 
+          ["<A-Left>"] = {
+            function() require("astrocore.buffer").move(-1) end,
+            desc = "Mover: Pestaña de archivo hacia a la izquierda",
           },
           ["<C-w>"] = {
             function()
@@ -45,9 +45,9 @@ return {
             end,
             desc = "Cerrar: Archivo",
           },
-          ["<C-e>"] = { 
-            function() require("telescope.builtin").find_files() end, 
-            desc = "Buscar: Archivo" 
+          ["<C-e>"] = {
+            function() require("telescope.builtin").find_files() end,
+            desc = "Buscar: Archivo",
           },
           ["<C-Right>"] = {
             function() require("astrocore.buffer").nav(vim.v.count1) end,
@@ -64,13 +64,16 @@ return {
           ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar: Texto hacia la izquierda" },
           ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar: Texto hacia la derecha" },
           ["<S-Tab>"] = { "<<", desc = "Identación: Quitar" },
-          ["<S-Home>"] = { "v^", desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea" },
+          ["<S-Home>"] = {
+            "v^",
+            desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea",
+          },
           ["<S-End>"] = { "v$", desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea" },
           ["<A-s>"] = { ":noautocmd w<cr>", desc = "Guardar: Archivo sin formatear" },
           ["<A-Up>"] = { ":m .-2<cr>==", desc = "Mover: Línea hacia arriba" },
           ["<A-Down>"] = { ":m .+1<cr>==", desc = "Mover: Línea hacia abajo" },
-          ["<A-.>"] = { ":vertical resize -5<cr>", desc = "Ventana: Aumentar ancho" },
-          ["<A-,>"] = { ":vertical resize +5<cr>", desc = "Ventana: Disminuir ancho" },
+          ["<A-.>"] = { ":vertical resize +5<cr>", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { ":vertical resize -5<cr>", desc = "Ventana: Disminuir ancho" },
           ["<C-a>"] = { "ggVG", desc = "Seleccionar: Todo" },
           ["<C-.>"] = { "a", desc = "Cambiar: Al modo insertar" },
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
@@ -108,24 +111,30 @@ return {
           ["<S-Down>"] = { "<Esc>v<Down>", desc = "Seleccionar: Texto hacia abajo" },
           ["<S-Left>"] = { "<Esc>v<Left>", desc = "Seleccionar: Texto hacia la izquierda" },
           ["<S-Right>"] = { "<Esc>v<Right>", desc = "Seleccionar hacia derecha" },
-          ["<S-Home>"] = { "<Esc>v^", desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea" },
-          ["<S-End>"] = { "<Esc>v$", desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea" },
+          ["<S-Home>"] = {
+            "<Esc>v^",
+            desc = "Seleccionar: Texto desde la posición del cursor hasta el inicio de la línea",
+          },
+          ["<S-End>"] = {
+            "<Esc>v$",
+            desc = "Seleccionar: Texto desde la posición del cursor hasta el final de la línea",
+          },
           ["<A-s>"] = { "<Esc>:noautocmd w<cr>a", desc = "Guardar: Archivo sin formatear" },
           ["<A-Up>"] = { "<Esc>:m .-2<cr>==gi", desc = "Mover: Línea hacia arriba" },
           ["<A-Down>"] = { "<Esc>:m .+1<cr>==gi", desc = "Mover: Línea hacia abajo" },
-          ["<A-.>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Ventana: Aumentar ancho" },
-          ["<A-,>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Ventana: Disminuir ancho" },
+          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>a", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>a", desc = "Ventana: Disminuir ancho" },
           ["<C-a>"] = { "<Esc>ggVG", desc = "Seleccionar: Todo" },
           ["<C-.>"] = { "<cmd>stopinsert<cr>", desc = "Entra en modo normal" },
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
           ["<C-s>"] = { "<Esc>:w<cr>a", desc = "Guardar: Archivo" },
           ["<C-z>"] = { "<Esc>ua", desc = "Deshacer" },
           ["<C-y>"] = { "<Esc><C-r>a", desc = "Rehacer" },
-          ["<C-v>"] = { '<C-r>+', desc = "Pegar: Desde el portapapeles" },         
+          ["<C-v>"] = { "<C-r>+", desc = "Pegar: Desde el portapapeles" },
           ["<C-x>"] = { '<Esc>"+di', desc = "Cortar: Desde el portapapeles" },
           ["<C-c>"] = { '<Esc>"+yya', desc = "Copiar: Desde el portapapeles" },
           ["<C-|>"] = { "<Esc><cmd>vsplit<cr>a", desc = "Abrir: Nueva ventana hacia la derecha" },
-          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Abrir: Nueva ventana hacia abajo" }, 
+          ["<C-->"] = { "<Esc><cmd>split<cr>a", desc = "Abrir: Nueva ventana hacia abajo" },
           ["<C-f>"] = { "<Esc><cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buscar: En el archivo" },
           ["<C-A-Left>"] = { "<Esc><C-w>h", desc = "Mover: Enfoque hacia la ventana de la izquierda" },
           ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
@@ -158,9 +167,9 @@ return {
           ["<A-s>"] = { "<Esc>:noautocmd w<cr>gv", desc = "Guardar: Archivo sin formatear" },
           ["<A-Up>"] = { ":m '<-2<cr>gv=gv", desc = "Mover: Línea hacia arriba" },
           ["<A-Down>"] = { ":m '>+1<cr>gv=gv", desc = "Mover: Línea hacia abajo" },
-          ["<A-.>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Ventana: Aumentar ancho" },
-          ["<A-,>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Ventana: Disminuir ancho" },
-          ["<C-a>"] = { "<Esc>ggVG", desc = "Seleccionar: Todo" },          
+          ["<A-.>"] = { "<Esc>:vertical resize +5<cr>gv", desc = "Ventana: Aumentar ancho" },
+          ["<A-,>"] = { "<Esc>:vertical resize -5<cr>gv", desc = "Ventana: Disminuir ancho" },
+          ["<C-a>"] = { "<Esc>ggVG", desc = "Seleccionar: Todo" },
           ["<C-.>"] = { "<Esc>", desc = "Entrar en modo normal" },
           ["<C-q>"] = { "<cmd>q<cr>", desc = "Cerrar: Ventana o editor" },
           ["<C-s>"] = { "<cmd>w<cr><Esc>", desc = "Guardar: Archivo" },
@@ -178,9 +187,8 @@ return {
           ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
           ["<A-a>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar: Todos los archivos" },
           ["<C-S-p>"] = { "<cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
-        }
+        },
       },
     },
   },
 }
-
