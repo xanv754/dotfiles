@@ -91,7 +91,7 @@ return {
           ["<C-A-Right>"] = { "<C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
           ["<C-A-Up>"] = { "<C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
           ["<C-A-Down>"] = { "<C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
-          ["<C-S-s>"] = { "<cmd>wa<cr>", desc = "Guardar: Todos los archivos" },
+          ["<A-a>"] = { "<cmd>wa<cr>", desc = "Guardar: Todos los archivos" },
           ["<C-S-p>"] = { "<Esc><cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         },
         i = {
