@@ -131,7 +131,7 @@ return {
           ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
           ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
           ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
-          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>a", desc = "Guardar: Todos los archivos" },
+          ["<A-a>"] = { "<Esc><cmd>wa<cr>a", desc = "Guardar: Todos los archivos" },
           ["<C-S-p>"] = { "<cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         },
         v = {
@@ -176,7 +176,7 @@ return {
           ["<C-A-Right>"] = { "<Esc><C-w>l", desc = "Mover: Enfoque hacia la ventana de la derecha" },
           ["<C-A-Up>"] = { "<Esc><C-w>k", desc = "Mover: Enfoque hacia la ventana de arriba" },
           ["<C-A-Down>"] = { "<Esc><C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
-          ["<C-S-s>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar: Todos los archivos" },
+          ["<A-a>"] = { "<Esc><cmd>wa<cr>gv", desc = "Guardar: Todos los archivos" },
           ["<C-S-p>"] = { "<cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
         }
       },
