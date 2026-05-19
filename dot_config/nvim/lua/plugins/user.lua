@@ -85,4 +85,9 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
   },
+
+  {
+    "MagicDuck/grug-far.nvim",
+    config = function() require("grug-far").setup() end,
+  },
 }
