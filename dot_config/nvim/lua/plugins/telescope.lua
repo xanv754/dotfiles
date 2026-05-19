@@ -1,5 +1,14 @@
+-- ~/.config/nvim/lua/plugins/telescope.lua
+
 return {
   "nvim-telescope/telescope.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  cmd = "Telescope", -- Esto asegura que el comando se reconozca
+  opts = {
+    defaults = {
+      file_ignore_patterns = {
+        "node_modules/",
+        "%.venv/",
+        "__pycache__/",
+      },
+    },
+  },
 }
