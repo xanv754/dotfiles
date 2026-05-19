@@ -19,7 +19,7 @@ return {
                 vim.cmd(":%s/\\<" .. word .. "\\>/")
               end
             end,
-            desc = "Renombrar: Variables",
+            desc = "Reemplazar: Variables",
           },
           ["<S-F12>"] = { -- TODO: Hacer que funcione
             function() vim.lsp.buf.references() end,
@@ -56,6 +56,15 @@ return {
           ["<C-Left>"] = {
             function() require("astrocore.buffer").nav(-vim.v.count1) end,
             desc = "Mover: Enfoque hacia la pestaña de la izquierda",
+          },
+          ["<C-r>"] = {
+            function()
+              local word = vim.fn.expand "<cword>"
+              require("grug-far").open {
+                prefills = { search = word },
+              }
+            end,
+            desc = "Reemplazar: Palabras o contenido",
           },
           ["<Tab>"] = { ">>", desc = "Identación: Añadir" },
           ["<Home>"] = { "^", desc = "Mover: Al inicio del archivo" },
@@ -103,6 +112,15 @@ return {
               if #bufs <= 1 then vim.cmd "enew" end
             end,
             desc = "Cerrar: Archivo",
+          },
+          ["<C-r>"] = {
+            function()
+              local word = vim.fn.expand "<cword>"
+              require("grug-far").open {
+                prefills = { search = word },
+              }
+            end,
+            desc = "Reemplazar: Palabras o contenido",
           },
           ["<Home>"] = { "<Esc>^i", desc = "Mover: Al inicio del archivo" },
           ["<F12>"] = { "<Esc><cmd>lua vim.lsp.buf.definition()<CR>", desc = "Ver: Definición" },
@@ -152,6 +170,15 @@ return {
               if #bufs <= 1 then vim.cmd "enew" end
             end,
             desc = "Cerrar: Archivo",
+          },
+          ["<C-r>"] = {
+            function()
+              local word = vim.fn.expand "<cword>"
+              require("grug-far").open {
+                prefills = { search = word },
+              }
+            end,
+            desc = "Reemplazar: Palabras o contenido",
           },
           ["<Tab>"] = { ">gv", desc = "Identación: Añadir" },
           ["<Home>"] = { "^", desc = "Mover: Al inicio del archivo" },
