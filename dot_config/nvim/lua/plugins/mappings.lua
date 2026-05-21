@@ -102,6 +102,7 @@ return {
           ["<C-A-Down>"] = { "<C-w>j", desc = "Mover: Enfoque hacia la ventana de abajo" },
           ["<A-a>"] = { "<cmd>wa<cr>", desc = "Guardar: Todos los archivos" },
           ["<C-S-p>"] = { "<Esc><cmd>NvimKeys<cr>", desc = "Abrir: NvimKeys" },
+          ["<localleader>l"] = { "G", desc = "Mover: A línea específica" },
         },
         i = {
           ["<C-w>"] = {
