@@ -66,6 +66,13 @@ return {
             end,
             desc = "Reemplazar: Palabras o contenido",
           },
+          ["<C-l>"] = {
+            function()
+              vim.lsp.stop_client(vim.lsp.get_clients())
+              vim.cmd "edit"
+            end,
+            desc = "LSP: Reiniciar",
+          },
           ["<Tab>"] = { ">>", desc = "Identación: Añadir" },
           ["<Home>"] = { "^", desc = "Mover: Al inicio del archivo" },
           ["<S-Up>"] = { "<Esc>v<Up>", desc = "Seleccionar: Texto hacia arriba" },
