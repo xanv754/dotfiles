@@ -66,7 +66,7 @@ return {
             end,
             desc = "Reemplazar: Palabras o contenido",
           },
-          ["<C-l>"] = {
+          ["<A-l>"] = {
             function()
               vim.lsp.stop_client(vim.lsp.get_clients())
               vim.cmd "edit"
