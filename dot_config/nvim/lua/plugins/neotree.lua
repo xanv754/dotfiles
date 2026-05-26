@@ -6,7 +6,7 @@ return {
     open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
     filesystem = {
       follow_current_file = {
-        enabled = true,
+        enabled = false,
       },
     },
     window = {
@@ -31,11 +31,9 @@ return {
     vim.api.nvim_create_autocmd("VimEnter", {
       callback = function()
         local arg = vim.fn.argv(0)
-        if not arg or arg == "" or vim.fn.isdirectory(arg) == 1 then
-          return
-        end
-        require("neo-tree.command").execute({ action = "show", source = "filesystem" })
-        vim.cmd("wincmd l")
+        if not arg or arg == "" or vim.fn.isdirectory(arg) == 1 then return end
+        require("neo-tree.command").execute { action = "show", source = "filesystem" }
+        vim.cmd "wincmd l"
       end,
     })
   end,
